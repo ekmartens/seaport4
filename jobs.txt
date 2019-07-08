@@ -1,0 +1,46 @@
+port Alpha 10001 0
+
+dock South_Dock 10002 10001
+dock North_Dock 10003 10001
+dock East_Dock 10004 10001
+ship Heartsail 10005 10002 15.0 70.10 900.76 25.25
+cship Blackflag 10006 10003 19.0 50.5 1000.99 28.5 5000000.00 70.00 400.55
+pship Triton 10007 10004 20.5 85.0 1500.00 36.6 18 37 40
+que pship Merida 10008 10001 30.5 100.45 2000.00 42.00 30 70 30
+que cship Harmony 10016 10001 28.9 88.77 1270.00 26.65 9000000.00 92.2 600.00
+que cship Melody 10017 10001 28.9 88.77 1370.00 25.65 7680000.00 57.70 500.00
+que pship Rover 10018 10001 36.9 100.45 2000.00 42.00 30 70 30
+que pship Zephyr 10019 10001 30.5 100.45 2000.00 41.00 36 77 42
+person Greg 10009 10001 Clerk
+person Angie 10010 10001 Clerk
+person Angel 10011 10001 Customer_Service
+person Brianna 10012 10001 Engineer
+person Carlos 10013 10001 Medic
+person Zeke 10014 10001 Security
+person Tina 10015 10001 Accountant
+job Inspect_Engines 10016 10005 30000.00 Engineer Engineer
+job Repair_Comms_Equipment 10017 10005 42000.00 IT_Specialist
+job Restock_Supplies 10018 10005 21000.00 Stocker
+job Unload_Cargo 10019 10006 60000.00 Heavy_Equipment_Operator Heavy_Equipment_Operator
+job Restock_Supplies 10020 10006 21000.00 Stocker
+job Inspect_New_Cargo 10021 10006 31000.00 Commerce_Officer
+job Load_Cargo 10022 10006 60000.00 Heavy_Equipment_Operator Heavy_Equipment_Operator
+job Unload_Passengers 10023 10007 40000.00 Attendant Attendant
+job Clean_Rooms 10024 10007 50000.00 Maid Maid Maid Maid
+job Restock_Kitchen 10025 10007 30000.00 Stocker Stocker Stocker
+job Board_Passengers 10026 10007 2500.00 Attendant Attendant
+job Unload_Passengers 10027 10008 4000.00 Attendant Attendant
+job Clean_Rooms 10028 10008 3000.00 Maid Maid Maid
+job Restock_Kitchen 10029 10008 5500.00 Stocker
+job Repair_Engine 10030 10016 60000.00 Engineer
+job Unload_Cargo 10031 10016 40000.00 Heavy_Equipment_Operator
+job Refuel 10032 10017 70000.00 Bunkering Bunkering Bunkering Bunkering Bunkering Bunkering
+job Unload_Cargo 10033 10017 45000.00 Heavy_Equipment_Operator Heavy_Equipment_Operator
+job Restock_Supplies 10034 10017 6000.00 Stocker
+job Unload_Passengers 10035 10018 50000.00 Attendant Attendant
+job Clean_Rooms 10036 10018 30000.00 Maid Maid Maid
+job Calculate_Incidentals 10037 10018 45000.00 Clerk
+job Load_Passengers 10038 10018 45000.00 Attendant Attendant
+job Unload_Passengers 10038 10019 55000.00 Attendant Attendant
+job Clean_Rooms 10039 10019 35000.00 Maid Maid Maid
+job Refuel 10040 10019 70000.00 Bunkering Bunkering Bunkering Bunkering Bunkering Bunkering
