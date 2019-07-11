@@ -20,10 +20,10 @@ public class Job extends Thing implements Runnable {
   private JProgressBar progress;
   private JButton pauseBtn = new JButton("Pause Job");
   private JButton killBtn = new JButton("Cancel Job");
-  private Boolean isGo = true;
+  private Boolean isGo = false;
   private Boolean isDone = false;
   private Boolean isKill = false;
-  private Boolean isDocked = false;
+  private HashMap<Integer, JLabel> reqLabels = new HashMap<Integer, JLabel>();
 
   public Job(Scanner sc){
     super();
@@ -45,9 +45,11 @@ public class Job extends Thing implements Runnable {
     buttons.add(killBtn);
     JPanel req = new JPanel();
     req.setLayout(new BoxLayout(req, BoxLayout.PAGE_AXIS));
-    for (String s : this.requirements){
-      JLabel jl = new JLabel(s);
-      jl.setForeground(Color.blue);
+
+    for (int i = 0; i < this.requirements.size(); i++){
+      JLabel jl = new JLabel(this.requirements.get(i));
+      jl.setForeground(Color.red);
+      reqLabels.put(i, jl);
       req.add(jl);
     }
 
@@ -96,13 +98,15 @@ public class Job extends Thing implements Runnable {
     isGo = !isGo;
   }
 
+  public synchronized void getResources(){
+
+  }
+
   public void cancel(){
     isKill = true;
   }
 
   public void run(){
-
-        toggleGo();
 
         int sleepInterval = (int)this.getDuration()/100;
 

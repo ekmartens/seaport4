@@ -11,13 +11,34 @@ que cship Harmony 10016 10001 28.9 88.77 1270.00 26.65 9000000.00 92.2 600.00
 que cship Melody 10017 10001 28.9 88.77 1370.00 25.65 7680000.00 57.70 500.00
 que pship Rover 10018 10001 36.9 100.45 2000.00 42.00 30 70 30
 que pship Zephyr 10019 10001 30.5 100.45 2000.00 41.00 36 77 42
-person Greg 10009 10001 Clerk
-person Angie 10010 10001 Clerk
-person Angel 10011 10001 Customer_Service
+person Greg 10009 10001 Heavy_Equipment_Operator
+person Angie 10010 10001 Heavy_Equipment_Operator
+person Angel 10011 10001 IT_Specialist
 person Brianna 10012 10001 Engineer
-person Carlos 10013 10001 Medic
-person Zeke 10014 10001 Security
-person Tina 10015 10001 Accountant
+person Carlos 10013 10001 Engineer
+person Danielle 10042 Commerce_Officer
+person Zeke 10014 10001 Stocker
+person Tina 10015 10001 Stocker
+person Trey 10041 10001 Stocker
+person Efraim 10042 10001 Attendant
+person George 10043 10001 Attendant
+person Harry 10044 10001 Attendant
+person Isabelle 10045 10001 Attendant
+person Jason 10046 10001 Bunkering
+person Kyle 10047 10001 Bunkering
+person Lisbeth 10048 10001 Bunkering
+person Meredith 10049 10001 Bunkering
+person Nile 10050 10001 Bunkering
+person Orion 10051 10001 Bunkering
+person Pedro 10052 10001 Bunkering
+person Qi 10053 10001 Bunkering
+person Ragnar 10054 10001 Bunkering
+person Stu 10055 10001 Maid
+person Tracy 10056 10001 Maid
+person Ula 10057 10001 Maid
+person Veronica 10058 10001 Maid
+person Wade 10059 10001 Maid
+person Xavier 10060 10001 Maid
 job Inspect_Engines 10016 10005 30000.00 Engineer Engineer
 job Repair_Comms_Equipment 10017 10005 42000.00 IT_Specialist
 job Restock_Supplies 10018 10005 21000.00 Stocker
@@ -34,6 +55,7 @@ job Clean_Rooms 10028 10008 3000.00 Maid Maid Maid
 job Restock_Kitchen 10029 10008 5500.00 Stocker
 job Repair_Engine 10030 10016 60000.00 Engineer
 job Unload_Cargo 10031 10016 40000.00 Heavy_Equipment_Operator
+job Inspect_New_Cargo 10061 10016 31000.00 Commerce_Officer Commerce_Officer
 job Refuel 10032 10017 70000.00 Bunkering Bunkering Bunkering Bunkering Bunkering Bunkering
 job Unload_Cargo 10033 10017 45000.00 Heavy_Equipment_Operator Heavy_Equipment_Operator
 job Restock_Supplies 10034 10017 6000.00 Stocker

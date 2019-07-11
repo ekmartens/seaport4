@@ -106,7 +106,6 @@ public class Ship extends Thing implements Runnable {
         Thread.sleep(100);
       } catch (InterruptedException ie){}
     }
-
   }
 
    public int compareTo(Ship compare){
@@ -123,31 +122,6 @@ public class Ship extends Thing implements Runnable {
      }
      return result;
    }
-
-/*
-   public void run(){
-     synchronized(dock){
-       while(dock.full){
-         try {
-           if (dock)
-           dock.getShip().wait();
-         } catch (InterruptedException ie){}
-       }
-       dock.full = true;
-       System.out.println("Dock full");
-     }
-
-      for (Job j : this.getJobs()){
-         j.run();
-       }
-
-       synchronized(dock){
-         dock.full = false;
-         dock.notifyAll();
-         System.out.println("Dock ready");
-       }
-   }
-   */
 
   @Override
   public String toString() {

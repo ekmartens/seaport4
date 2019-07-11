@@ -245,6 +245,12 @@ public class SeaPortProgram extends JFrame {
     JPanel left = new JPanel();
     left.setLayout(new BorderLayout());
     left.add(displayPanel, BorderLayout.NORTH);
+    //Available Persons/Skills
+    JPanel peoplePanel = new JPanel();
+    peoplePanel.setLayout(new GridLayout(0, 7));
+    peoplePanel.setBorder(BorderFactory.createTitledBorder("Persons"));
+    left.add(peoplePanel, BorderLayout.EAST);
+    //Run jobs button
     JPanel jbtn = new JPanel();
     JButton runJobs = new JButton("Run Jobs");
     jbtn.add(runJobs);
@@ -252,9 +258,6 @@ public class SeaPortProgram extends JFrame {
     JPanel jobsP = new JPanel();
     jobsP.setBorder(BorderFactory.createTitledBorder("Jobs"));
     jobsP.setLayout(new GridLayout(0, 10));
-    //JScrollPane jobScroll = new JScrollPane(jobsP);
-    //left.add(jobScroll, BorderLayout.SOUTH);
-
 
     //add panels to frame
     this.add(topPanel, BorderLayout.NORTH);
@@ -269,6 +272,8 @@ public class SeaPortProgram extends JFrame {
     HashMap<Integer, Dock> worldDocks = new HashMap<Integer, Dock>();
     HashMap<Integer, Ship> worldShips = new HashMap<Integer, Ship>();
     HashMap<Integer, Person> worldPersons = new HashMap<Integer, Person>();
+    HashMap<Integer, JLabel> personLabels = new HashMap<Integer, JLabel>();//tracks labels for Persons/Skills so color can be changed with status
+
     //action listener for file chooser
     chooseFile.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
@@ -334,6 +339,17 @@ public class SeaPortProgram extends JFrame {
                   }
                 }
 
+                //add people
+                for (Person p : worldPersons.values()){
+                  JLabel l = new JLabel(p.getName() + ": " + p.getSkill());
+                  l.setForeground(Color.blue);
+                  l.setHorizontalAlignment(JLabel.CENTER);
+                  personLabels.put(p.getIndex(), l);
+                  peoplePanel.add(l);
+                }
+
+                //initialze skills
+
 
             } catch (FileNotFoundException fnfe){
               System.out.println("File Not Found");
@@ -349,6 +365,7 @@ public class SeaPortProgram extends JFrame {
         public void actionPerformed(ActionEvent e){
           if (world != null){
             for (SeaPort sp : world.getPorts()){
+
               int size = sp.getDocks().size();
               if (size > 0){
                 ExecutorService exec = Executors.newFixedThreadPool(size);
@@ -363,31 +380,53 @@ public class SeaPortProgram extends JFrame {
 
                 for (Dock d: sp.getDocks()){
                   if (d.getShip() != null){
+                    //for each job on the ship, check to see if there are enough resources to complete the job
+                    //if no, cancel job
+                    for (Job j : d.getShip().getJobs()){
+                      for (String s : j.getRequirements()){
+                        int count = 0;
+                        for (String str : j.getRequirements()){
+                          if (Objects.equals(s, str)){
+                            count += 1;
+                          }
+                        }
+                        int res = 0;
+                        for (Person p : sp.getPersons()){
+                          if (Objects.equals(p.getSkill(), s)){
+                            res += 1;
+                          }
+                        }
+                        if (count > res){
+                          j.cancel();
+                        }
+                      }
+                    }
                     exec.execute(d.getShip());
                   }
                 }
 
                 for (Ship s : sp.getQue()){
+                  for (Job j : s.getJobs()){
+                    for (String string : j.getRequirements()){
+                      int count = 0;
+                      for (String str : j.getRequirements()){
+                        if (Objects.equals(string, str)){
+                          count += 1;
+                        }
+                      }
+                      int res = 0;
+                      for (Person p : sp.getPersons()){
+                        if (Objects.equals(p.getSkill(), string)){
+                          res += 1;
+                        }
+                      }
+                      if (count > res){
+                        j.cancel();
+                      }
+                    }
+                  }
                   exec.execute(s);
                 }
-  /*
-                while(!st.empty()){
-                  for (Dock d : sp.getDocks()){
-                    if (d.getShip() == null){
-                      if (!st.empty()){
-                        d.setShip(st.pop());
-                        System.out.println(d.getShip().getName() + " docked");
-                      }
-                    }
-                    if (d.getShip() != null){
-                      for (Job j : d.getShip().getJobs()){
-                        j.toggleGo();
-                      }
-                    }
-                    d.setShip(null);
-                  }
-                }
-                */
                 exec.shutdown();
               }
             }
