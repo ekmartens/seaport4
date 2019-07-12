@@ -5,9 +5,14 @@
 */
 
 import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class Person extends Thing {
   private String skill = "";
+  private boolean isBusy = false;
+  private JLabel pLabel;
 
   public Person(Scanner sc){
     super();
@@ -15,6 +20,14 @@ public class Person extends Thing {
     setIndex(sc.nextInt());
     setParent(sc.nextInt());
     this.skill = sc.next();
+
+    this.pLabel = new JLabel(this.getName() + ": " + this.skill);
+    pLabel.setForeground(Color.blue);
+    pLabel.setHorizontalAlignment(JLabel.CENTER);
+  }
+
+  public JLabel getLabel(){
+    return this.pLabel;
   }
 
   public void setSkill(String skill){
@@ -23,6 +36,20 @@ public class Person extends Thing {
 
   public String getSkill(){
     return this.skill;
+  }
+
+  public void toggleWorking(){
+    if(isBusy == false){
+      isBusy = true;
+      this.pLabel.setForeground(Color.red);
+    } else {
+      isBusy = false;
+      this.pLabel.setForeground(Color.blue);
+    }
+  }
+
+  public Boolean getStatus(){
+    return this.isBusy;
   }
 
   @Override

@@ -95,10 +95,11 @@ public class Ship extends Thing implements Runnable {
     return isDone;
   }
 
+
   public void run(){
     boolean isDone = false;
     for (Job j : this.getJobs()){
-      j.toggleGo();
+      j.gatherResources();
     }
     while (isDone == false){
       isDone = areJobsDone();
@@ -128,13 +129,4 @@ public class Ship extends Thing implements Runnable {
     String str = super.toString() + "\nDraft: " + this.draft + "\nLength: " + this.length + "\nWeight: " + this.weight + "\nWidth: " + this.width;
     return str;
   }
-
-/*
-  public static void main(String[] args){
-    String line = "200.00 1200.50 10000.26 750.0";
-    Scanner sc = new Scanner(line);
-    Ship test = new Ship("Test", 1, 2, sc);
-    System.out.println(test.toString());
-  }
-  */
 }//end class

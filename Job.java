@@ -24,6 +24,7 @@ public class Job extends Thing implements Runnable {
   private Boolean isDone = false;
   private Boolean isKill = false;
   private HashMap<Integer, JLabel> reqLabels = new HashMap<Integer, JLabel>();
+  private ArrayList<Person> persons;
 
   public Job(Scanner sc){
     super();
@@ -98,12 +99,72 @@ public class Job extends Thing implements Runnable {
     isGo = !isGo;
   }
 
-  public synchronized void getResources(){
-
+  public HashMap<String, Integer> calculateResources(){
+    HashMap<String, Integer> jobRes = new HashMap<String, Integer>();
+    for (String s : this.requirements){
+      if (!jobRes.containsKey(s)){
+        jobRes.put(s, 1);
+      } else {
+        jobRes.put(s, jobRes.get(s) + 1);
+      }
+    }
+    return jobRes;
   }
+
+  public void setResources(ArrayList<Person> persons){
+    this.persons = persons;
+  }//end getResources
 
   public void cancel(){
     isKill = true;
+  }
+
+  public synchronized void gatherResources(){
+    if (isKill == false){
+      int resCount = 0;
+      System.out.println("Req: " + this.requirements.size());
+      while(resCount < this.requirements.size()){
+      for (int i = 0; i < this.requirements.size(); i++){
+        for (Person p : persons){
+          if (Objects.equals(this.requirements.get(i), p.getSkill())){
+            if (p.getStatus() == false){
+              System.out.println(this.getName() + " " + this.requirements.get(i) + " in use");
+              p.toggleWorking();
+              reqLabels.get(i).setForeground(Color.blue);
+              System.out.println("Setting label " + i + " to blue");
+              resCount += 1;
+              break;
+            }
+          }
+        }
+      }//end for
+      }
+      toggleGo();
+    }//end if isKill
+    else {
+      toggleGo();
+    }
+  }
+
+  public synchronized void releaseResources(){
+
+    int resCount = this.requirements.size();
+    while(resCount > 0){
+      for (int i = 0; i < this.requirements.size(); i++){
+        for (Person p : persons){
+          if (Objects.equals(this.requirements.get(i), p.getSkill())){
+            if (p.getStatus() == true){
+              System.out.println(this.getName() + " " + this.requirements.get(i) + " finished");
+              p.toggleWorking();
+              reqLabels.get(i).setForeground(Color.red);
+              System.out.println("Setting label " + i + " to red");
+              resCount -= 1;
+              break;
+            }
+          }
+        }
+      }//end for
+    }
   }
 
   public void run(){
@@ -136,11 +197,13 @@ public class Job extends Thing implements Runnable {
             //change bg color to red
             progress.setForeground(Color.red);
             this.isDone = true;
+            releaseResources();
           }
         }
         if (progress.getValue() == 100){
           progress.setForeground(Color.green);
         }
         this.isDone = true;
+        releaseResources();
   }
 }//end class
