@@ -119,7 +119,7 @@ public class Job extends Thing implements Runnable {
     isKill = true;
   }
 
-  public synchronized void gatherResources(){
+  public void gatherResources(){
     if (isKill == false){
       int resCount = 0;
       System.out.println("Req: " + this.requirements.size());
@@ -131,6 +131,9 @@ public class Job extends Thing implements Runnable {
               System.out.println(this.getName() + " " + this.requirements.get(i) + " in use");
               p.toggleWorking();
               reqLabels.get(i).setForeground(Color.blue);
+              try {
+                Thread.sleep(100);
+              } catch (InterruptedException ie){}
               System.out.println("Setting label " + i + " to blue");
               resCount += 1;
               break;
@@ -146,7 +149,7 @@ public class Job extends Thing implements Runnable {
     }
   }
 
-  public synchronized void releaseResources(){
+  public void releaseResources(){
 
     int resCount = this.requirements.size();
     while(resCount > 0){
@@ -157,6 +160,9 @@ public class Job extends Thing implements Runnable {
               System.out.println(this.getName() + " " + this.requirements.get(i) + " finished");
               p.toggleWorking();
               reqLabels.get(i).setForeground(Color.red);
+              try {
+                Thread.sleep(100);
+              } catch (InterruptedException ie){}
               System.out.println("Setting label " + i + " to red");
               resCount -= 1;
               break;
@@ -204,6 +210,8 @@ public class Job extends Thing implements Runnable {
           progress.setForeground(Color.green);
         }
         this.isDone = true;
-        releaseResources();
+        synchronized(this.persons){
+          releaseResources();
+        }
   }
 }//end class

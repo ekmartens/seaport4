@@ -26,7 +26,7 @@ public class Person extends Thing {
     pLabel.setHorizontalAlignment(JLabel.CENTER);
   }
 
-  public JLabel getLabel(){
+  public synchronized JLabel getLabel(){
     return this.pLabel;
   }
 
@@ -34,21 +34,21 @@ public class Person extends Thing {
     this.skill = skill;
   }
 
-  public String getSkill(){
+  public synchronized String getSkill(){
     return this.skill;
   }
 
-  public void toggleWorking(){
+  public synchronized void toggleWorking(){
     if(isBusy == false){
-      isBusy = true;
       this.pLabel.setForeground(Color.red);
+      isBusy = true;
     } else {
-      isBusy = false;
       this.pLabel.setForeground(Color.blue);
+      isBusy = false;
     }
   }
 
-  public Boolean getStatus(){
+  public synchronized Boolean getStatus(){
     return this.isBusy;
   }
 

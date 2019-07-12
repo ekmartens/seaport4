@@ -402,32 +402,25 @@ public class SeaPortProgram extends JFrame {
                   }
                     exec.execute(d.getShip());
                   }
-
                 }
-/*
+
                 for (Ship s : sp.getQue()){
                   for (Job j : s.getJobs()){
-                    for (String string : j.getRequirements()){
-                      int count = 0;
-                      for (String str : j.getRequirements()){
-                        if (Objects.equals(string, str)){
-                          count += 1;
-                        }
-                      }
-                      int res = 0;
-                      for (Person p : sp.getPersons()){
-                        if (Objects.equals(p.getSkill(), string)){
-                          res += 1;
-                        }
-                      }
-                      if (count > res){
+                    HashMap<String, Integer> jobReqs = j.calculateResources();
+                    for (String str : j.getRequirements()){
+                      if (!resourceLookup.containsKey(str)){
                         j.cancel();
+                      } else {
+                        if (resourceLookup.get(str) < jobReqs.get(str)){
+                          j.cancel();
+                        }
                       }
                     }
+                    j.setResources(sp.getPersons());
                   }
+
                   exec.execute(s);
                 }
-                */
                 exec.shutdown();
               }
             }
