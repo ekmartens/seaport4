@@ -458,7 +458,7 @@ public class SeaPortProgram extends JFrame {
                                       break;
                                     }
                                   }
-                                }    
+                                }
                               }
                               j.resetLabels();
                             }//end synchronized

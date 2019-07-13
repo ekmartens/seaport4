@@ -11,7 +11,7 @@ o jobs: ArrayList <Job>
 
 import java.util.*;
 
-public class Ship extends Thing implements Runnable {
+public class Ship extends Thing {
   private PortTime arrivalTime, dockTime;
   private double draft, length, weight, width;
   private ArrayList<Job> jobs;
@@ -95,19 +95,6 @@ public class Ship extends Thing implements Runnable {
     return isDone;
   }
 
-
-  public void run(){
-    boolean isDone = false;
-    for (Job j : this.getJobs()){
-      j.toggleGo();
-    }
-    while (isDone == false){
-      isDone = areJobsDone();
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException ie){}
-    }
-  }
 
    public int compareTo(Ship compare){
      //sort priority weight, length, width, draft

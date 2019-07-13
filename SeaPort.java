@@ -2,12 +2,6 @@
 * Author: Emily Martens
 * Date: 5/21/19
 * Purpose:
-
-SeaPort extends Thing
-o docks: ArrayList <Dock>
-o que: ArrayList <Ship> // the list of ships waiting to dock
-o ships: ArrayList <Ship> // a list of all the ships at this port
-o persons: ArrayList <Person> // people with skills at this port
 */
 
 import java.util.*;

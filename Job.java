@@ -3,9 +3,6 @@
 * Date: 5/22/19
 * Purpose:
 
-Job extends Thing - optional till Projects 3 and 4
-o duration: double
-o requirements: ArrayList <String> // should be some of the skills of the persons
 */
 
 import java.util.*;
