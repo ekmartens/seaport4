@@ -338,13 +338,6 @@ public class SeaPortProgram extends JFrame {
                   }
                 }
 
-                //add people
-                for (SeaPort sp : world.getPorts()){
-                  for (Person p : sp.getPersons()){
-                    peoplePanel.add(p.getLabel());
-                  }
-                }
-
 
                 //initialze skills
 
@@ -396,6 +389,13 @@ public class SeaPortProgram extends JFrame {
                     resourcePool.put(p.getSkill(), people);
                   } else {
                     resourcePool.get(p.getSkill()).add(p);
+                  }
+                }
+
+                for (ArrayList<Person> alp : resourcePool.values()){
+                  for (Person p : alp){
+                    //add people
+                    peoplePanel.add(p.getLabel());
                   }
                 }
 

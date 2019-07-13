@@ -21,7 +21,7 @@ public class Job extends Thing implements Runnable {
   private Boolean isDone = false;
   private Boolean isKill = false;
   private HashMap<Integer, JLabel> reqLabels = new HashMap<Integer, JLabel>();
-  private Stack<Person> workers = new Stack<Person>();
+  //private Stack<Person> workers = new Stack<Person>();
 
   public Job(Scanner sc){
     super();
@@ -124,14 +124,6 @@ public class Job extends Thing implements Runnable {
 
   public void gatherResource(int count){
     reqLabels.get(count).setForeground(Color.blue);
-  }
-
-  public Stack<Person> getWorkers(){
-    return this.workers;
-  }
-
-  public Person returnWorker(){
-    return this.workers.pop();
   }
 
   public void run(){
