@@ -339,9 +339,12 @@ public class SeaPortProgram extends JFrame {
                 }
 
                 //add people
-                for (Person p : worldPersons.values()){
-                  peoplePanel.add(p.getLabel());
+                for (SeaPort sp : world.getPorts()){
+                  for (Person p : sp.getPersons()){
+                    peoplePanel.add(p.getLabel());
+                  }
                 }
+
 
                 //initialze skills
 
@@ -369,25 +372,36 @@ public class SeaPortProgram extends JFrame {
                 int max = sp.getQue().size();
                 int counter = 0;
                 Stack<Ship> st = new Stack<Ship>();
+
                 for (Ship s : sp.getQue()){
                   st.push(s);
                 }
+                for (Dock d : sp.getDocks()){
+                  if (d.getShip() != null){
+                    st.push(d.getShip());
+                  }
+                }
                 //total resource lookup
                 HashMap<String, Integer> resourceLookup = new HashMap<String, Integer>();
+                HashMap<String, ArrayList<Person>> resourcePool = new HashMap<String, ArrayList<Person>>();
                 for (Person p : sp.getPersons()){
                   if (!resourceLookup.containsKey(p.getSkill())){
                     resourceLookup.put(p.getSkill(), 1);
                   } else {
                     resourceLookup.put(p.getSkill(), resourceLookup.get(p.getSkill()) + 1);
                   }
+                  if (!resourcePool.containsKey(p.getSkill())){
+                    ArrayList<Person> people = new ArrayList<Person>();
+                    people.add(p);
+                    resourcePool.put(p.getSkill(), people);
+                  } else {
+                    resourcePool.get(p.getSkill()).add(p);
+                  }
                 }
 
-                for (Dock d: sp.getDocks()){
-                  if (d.getShip() != null){
-                    //for each job on the ship, check to see if there are enough resources to complete the job
-                    //if no, cancel job
-
-                  for (Job j : d.getShip().getJobs()){
+                while (!st.empty()){
+                  Ship sh = st.pop();
+                  for (Job j : sh.getJobs()){
                     HashMap<String, Integer> jobReqs = j.calculateResources();
                     for (String s : j.getRequirements()){
                       if (!resourceLookup.containsKey(s)){
@@ -398,29 +412,71 @@ public class SeaPortProgram extends JFrame {
                         }
                       }
                     }
-                    j.setResources(sp.getPersons());
                   }
-                    exec.execute(d.getShip());
-                  }
-                }
+                  Runnable runShip = (new Runnable(){
+                    public void run(){
+                      Boolean isDone = false;
+                      for (Job j : sh.getJobs()){
+                        if (j.getKillFlag() == false){
+                          int resCount = 0;
+                        synchronized(resourcePool){
+                          for(int i = 0; i < j.getRequirements().size(); i++){
+                            String lu = j.getRequirements().get(i);
+                            for (Person p : resourcePool.get(lu)){
+                              if (p.getStatus() == false){
+                                p.toggleWorking();
+                                j.gatherResource(i);
 
-                for (Ship s : sp.getQue()){
-                  for (Job j : s.getJobs()){
-                    HashMap<String, Integer> jobReqs = j.calculateResources();
-                    for (String str : j.getRequirements()){
-                      if (!resourceLookup.containsKey(str)){
-                        j.cancel();
-                      } else {
-                        if (resourceLookup.get(str) < jobReqs.get(str)){
-                          j.cancel();
+                                resCount += 1;
+                                break;
+                              }
+                            }
+                          }
+
+                        }//end synchronized
+                        if(resCount == j.getRequirements().size()){
+                          j.toggleGo();
                         }
+                      } else {
+                        j.toggleGo();
+                      }
+                      }
+
+                      while (isDone == false){
+                        int dn = 0;
+                        for (Job j : sh.getJobs()){
+                          if (j.done() != true){
+                            dn +=1;
+                          } else {
+                            synchronized(resourcePool){
+                              for (int i = 0; i < j.getRequirements().size(); i++){
+                                String lu = j.getRequirements().get(i);
+                                if (resourcePool.containsKey(lu)){
+                                  for (Person p : resourcePool.get(lu)){
+                                    if (p.getStatus() == true){
+                                      p.toggleWorking();
+                                      break;
+                                    }
+                                  }
+                                }    
+                              }
+                              j.resetLabels();
+                            }//end synchronized
+                          }
+                        }
+                        if (dn > 0){
+                          isDone = false;
+                        } else {
+                          isDone = true;
+                        }
+                        try {
+                          Thread.sleep(100);
+                        } catch (InterruptedException ie){}
                       }
                     }
-                    j.setResources(sp.getPersons());
-                  }
-
-                  exec.execute(s);
-                }
+                  });
+                  exec.execute(runShip);
+                }//end while
                 exec.shutdown();
               }
             }

@@ -99,7 +99,7 @@ public class Ship extends Thing implements Runnable {
   public void run(){
     boolean isDone = false;
     for (Job j : this.getJobs()){
-      j.gatherResources();
+      j.toggleGo();
     }
     while (isDone == false){
       isDone = areJobsDone();
