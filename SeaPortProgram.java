@@ -272,6 +272,7 @@ public class SeaPortProgram extends JFrame {
     HashMap<Integer, Dock> worldDocks = new HashMap<Integer, Dock>();
     HashMap<Integer, Ship> worldShips = new HashMap<Integer, Ship>();
     HashMap<Integer, Person> worldPersons = new HashMap<Integer, Person>();
+    HashMap<String, ArrayList<Person>> resourcePool = new HashMap<String, ArrayList<Person>>();
 
     //action listener for file chooser
     chooseFile.addActionListener(new ActionListener(){
@@ -337,11 +338,6 @@ public class SeaPortProgram extends JFrame {
                     jobsP.add(jp);
                   }
                 }
-
-
-                //initialze skills
-
-
             } catch (FileNotFoundException fnfe){
               System.out.println("File Not Found");
             }
@@ -383,13 +379,7 @@ public class SeaPortProgram extends JFrame {
                   } else {
                     resourceLookup.put(p.getSkill(), resourceLookup.get(p.getSkill()) + 1);
                   }
-                  if (!resourcePool.containsKey(p.getSkill())){
-                    ArrayList<Person> people = new ArrayList<Person>();
-                    people.add(p);
-                    resourcePool.put(p.getSkill(), people);
-                  } else {
-                    resourcePool.get(p.getSkill()).add(p);
-                  }
+
                 }
 
                 for (ArrayList<Person> alp : resourcePool.values()){
